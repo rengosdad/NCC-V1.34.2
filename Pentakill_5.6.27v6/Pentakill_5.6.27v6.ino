@@ -209,20 +209,24 @@ void setup()
    delay(1);
  }
     I=(average); 
-    if( (average) <0);
-average = average  *(-1)
-;  
+    
+    if( (average) < 0);
+   {
+average = average *(-1);  
+    }
+    delay(1);
  Serial.print("APE :");
+ 
  Serial.println(average/1000);
  lcd1.setCursor(0,0);
  lcd1.print("I= ");
 
      lcd1.setCursor(4,0);
-     lcd1.print((average/1000 ) );
+     lcd1.print((average/1000 - 0.04 + 0.01 ) );
     
       lcd1.print(" A");
      
-     
+     average = 0;
 }
   {
   
