@@ -1,5 +1,5 @@
 //Hieu dien the                                                      chan A1
-//Dong dien                                                          chan A0
+//Dong dien                                                          chan A5
 //Mang hinh , ap xuat BMP 180                                        chan I2C SDA, SCL
 //Luu luong (attachInterrupt(0, flow, RISING); // Setup Interrupt )  chan 2
 //toc do vong quay   (attachInterrupt(1, dem_xung, RISING); )        chan 3  
@@ -13,6 +13,7 @@
  LiquidCrystal_I2C lcd(0x27,16,2); //LCD 16x02, địa chỉ I2C là 0X27
  LiquidCrystal_I2C lcd1(0x26,16,2);
  #define ANALOG_IN_PIN A1
+ #define ANALOG_IN_PIN A5
  float adc_voltage = 0.0;
 float in_voltage = 0.0;
 int bawn ;
@@ -26,8 +27,9 @@ float ref_voltage = 5.0;
 int adc_value = 0;
 int enco = 3;//toc do vong quay chan 3
 int dem = 0;
+int nhip =0;
 int rpm = 0; 
-int timecho = 15000;// laays 1 vongf ddem laf 15 giay
+int timecho = 10000;// laays 1 vongf ddem laf 30 giay
 int L = 0;
 int Pr = 0;
 int V = 0;
@@ -167,66 +169,85 @@ void setup()
   delay(5000);  
 }
   {
-   currentTime = millis();
+   currentTime = millis ();
+   
   
-   if(currentTime >= (cloopTime + 15000))
+   if(currentTime >= (cloopTime + 10000))
    {
         cloopTime = currentTime; 
-      l_hour = (flow_frequency * 60 / 7.5/15); 
-      flow_frequency = 0; 
-       L=(l_hour);
-       if( L <0);
-       L = L  *(-1);
-      Serial.print(l_hour, DEC); 
+      l_hour = (flow_frequency * 60 / 7.5/10); 
+      flow_frequency = 0;   
+             
+       delay(100);
+       
+       //if( L <0);
+       //L = L  *(-1);
+      Serial.print((l_hour), DEC); 
       Serial.println(" L/hour");
+      L = abs((l_hour));
       
    }
 }
   {
-   thoigian = millis();
+   thoigian = millis ();
+   
   
   if (thoigian - hientai >= timecho)
   {
     hientai = thoigian;
-    rpm = (dem/1)*60/150; 
+    
+    
+   
+    rpm = (dem/1)*60/100; 
         /*
-         * Đĩa encoder có 20 xung, chúng ta đo được 120 xung/s
-         * vậy lấy 120/20 = 6 vòng/s
-         * ta được: 6*60 = số vòng quay / phút (RPM)
+         * ÄÄ©a encoder cÃ³ 20 xung, chÃºng ta Ä‘o Ä‘Æ°á»£c 120 xung/s
+         * váº­y láº¥y 120/20 = 6 vÃ²ng/s
+         * ta Ä‘Æ°á»£c: 6*60 = sá»‘ vÃ²ng quay / phÃºt (RPM)
          * chia 15 vif chu kyf ddem 1 laanf 30 giay
          */
-          V=(rpm);
-    Serial.print("\t\t\t\t"); Serial.print("Số xung/s: "); Serial.println(dem);
+         
+    Serial.print("\t\t\t\t"); Serial.print("So xung/s: "); Serial.println(dem);
     Serial.print("\t\t\t\t"); Serial.print("RPM: "); Serial.println(rpm);
       
-       dem = 0; 
+        
+
+    delay(100); 
+    dem = 0;
+     V =  abs((rpm)); 
+     hientai = thoigian;  
   }
   }
   {
  float average = 0;
  for(int i = 0; i < 1000; i++) {
-     bawn = average =  average + (.0264 * analogRead(A0) -13.453);
+       //average = average + (.0264 * analogRead(A0) -13.51);//for the 5A mode,  
+//   average = average + (.049 * analogRead(A0) -25);// for 20A mode
+// average = average + (.742 * analogRead(A0) -37.8);// for 30A mode
+     bawn = average =  average + (.0264 * analogRead(A5) -9.459);
    delay(1);
  }
-    I=(average); 
-    
-    if( (average) < 0);
-   {
-average = average *(-1);  
-    }
-    delay(1);
- Serial.print("APE :");
+    //I=(average); 
+   // if( (average) <0);
+//average = average  *(-1); 
+ //I=abs((average)); 
  
+  if( (U) <20){
+ 
+  (average)=0; 
+  I = 0 ;} 
+  else {I = abs((average));}
+  
+ Serial.print("APE :");
  Serial.println(average/1000);
  lcd1.setCursor(0,0);
  lcd1.print("I= ");
 
      lcd1.setCursor(4,0);
-     lcd1.print((average/1000 - 0.04 + 0.01 ) );
+    lcd1.print(abs(average )/1000 );
     
       lcd1.print(" A");
      
-     average = 0;
+     
 }
   {
   
