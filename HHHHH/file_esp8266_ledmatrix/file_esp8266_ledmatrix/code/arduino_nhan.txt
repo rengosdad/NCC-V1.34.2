@@ -1,0 +1,16 @@
+String data;
+void setup() {
+  Serial.begin(9600);
+
+}
+
+void loop() { // run over and over
+  while(Serial.available()) {
+    char c = Serial.read();
+    data = data + c;
+  }
+  Serial.println(data);
+  delay(1000);
+
+  data = "";
+}
