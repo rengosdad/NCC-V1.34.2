@@ -223,7 +223,7 @@ void setup()
        //average = average + (.0264 * analogRead(A0) -13.51);//for the 5A mode,  
 //   average = average + (.049 * analogRead(A0) -25);// for 20A mode
 // average = average + (.742 * analogRead(A0) -37.8);// for 30A mode
-     bawn = average =  average + (.0264 * analogRead(A5) -9.459);
+     bawn = average =  average +( (.0264 * analogRead(A5) ) - 13.453);
    delay(1);
  }
     //I=(average); 
